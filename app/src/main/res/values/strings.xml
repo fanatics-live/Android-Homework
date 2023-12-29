@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">SWAPI GraphQL</string>
+    <string name="people_title">People</string>
+    <string name="height_label">Height: %d</string>
+    <string name="mass_label">Mass: %.1f</string>
+    <string name="person_prompt">Click here to view homeworld data for %s</string>
 </resources>

@@ -3,6 +3,11 @@ query GetPeopleQuery {
         totalCount
         people {
             name
+            height
+            mass
+            homeworld {
+                id
+            }
         }
     }
 }
