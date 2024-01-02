@@ -2,12 +2,22 @@ query GetPeopleQuery {
     allPeople {
         totalCount
         people {
+            id
             name
             height
             mass
             homeworld {
-                id
+                name
+                diameter
+                gravity
+                population
             }
         }
+    }
+}
+
+query GetPerson($personID: ID) {
+    person(personID: $personID) {
+        name
     }
 }

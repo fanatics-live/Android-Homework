@@ -6,25 +6,58 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lagunalabs.`swapi-graphql`.GetPeopleQuery
+import com.lagunalabs.swapigraphql.model.Person
 import com.lagunalabs.swapigraphql.networking.PeopleApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class PeopleViewModel: ViewModel() {
 
-    val state: MutableState<List<GetPeopleQuery.Person?>> = mutableStateOf(emptyList())
+    val peopleState: MutableState<List<GetPeopleQuery.Person?>> = mutableStateOf(emptyList())
+
+    val personState: MutableState<Person?> = mutableStateOf(null)
+
+    val homeWorldState: MutableState<GetPeopleQuery.Homeworld?> = mutableStateOf(null)
 
     private val apiService by lazy { PeopleApiService() }
+
+    private val tag = "PeopleViewModel"
 
     fun fetchPeople() {
         viewModelScope.launch(Dispatchers.IO) {
             runCatching {
                 apiService.getPeople()
             }.onSuccess { people ->
-                people?.let { state.value = it }
+                people?.let { peopleState.value = it }
             }.onFailure {
-                Log.e(MainActivity.TAG, it.message ?: it.toString())
+                Log.e(tag, it.message ?: it.toString())
             }
         }
+    }
+
+    fun fetchPerson(personId: String?) {
+        viewModelScope.launch(Dispatchers.IO) {
+            runCatching {
+                apiService.getPerson(personId)
+            }.onSuccess {
+                personState.value = Person(it?.name)
+            }.onFailure {
+                Log.e(tag, it.message ?: it.toString())
+                getPersonFromMemory(personId)
+            }
+        }
+    }
+
+    fun getPersonFromMemory(personId: String?): GetPeopleQuery.Person? {
+        peopleState.value.forEach {
+            if (it?.id == personId) {
+                return it
+            }
+        }
+        return null
+    }
+
+    fun updateHomeWorld(homeWorld: GetPeopleQuery.Homeworld?) {
+        homeWorldState.value = homeWorld
     }
 }
