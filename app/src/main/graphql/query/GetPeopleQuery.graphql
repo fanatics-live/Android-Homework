@@ -17,7 +17,13 @@ query GetPeopleQuery {
 }
 
 query GetPerson($personID: ID) {
-    person(personID: $personID) {
+    person(id: $personID) {
         name
+        homeworld {
+            name
+            diameter
+            gravity
+            population
+        }
     }
 }

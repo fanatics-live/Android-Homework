@@ -183,7 +183,8 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun Person(personId: String?, onShowSheet: () -> Unit) {
-        val person = viewModel.getPersonFromMemory(personId)
+        viewModel.fetchPerson(personId)
+        val person  by remember { viewModel.personState }
 
         Column {
             Row(
@@ -233,7 +234,6 @@ class MainActivity : ComponentActivity() {
                     annotatedString.getStringAnnotations(it, it).firstOrNull()?.let { range ->
                         if (range.item == clickableText) {
                             onShowSheet()
-                            viewModel.updateHomeWorld(person?.homeworld)
                         }
                     }
                 },
@@ -263,7 +263,7 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun HomeWorld() {
-        val planet by remember { viewModel.homeWorldState }
+        val person by remember { viewModel.personState }
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -273,7 +273,7 @@ class MainActivity : ComponentActivity() {
                 )
                 .padding(16.dp)
         ) {
-            planet?.apply {
+            person?.homeworld?.apply {
                 Text(
                     name.toString(),
                     color = Color.White,
