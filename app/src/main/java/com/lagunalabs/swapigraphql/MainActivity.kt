@@ -4,21 +4,22 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
 import com.lagunalabs.`swapi-graphql`.GetPeopleQuery
 import com.lagunalabs.swapigraphql.networking.ApolloNetworking
 import com.lagunalabs.swapigraphql.ui.theme.SWAPIGraphQLTheme
 import kotlinx.coroutines.launch
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.lagunalabs.swapigraphql.ui.PeopleDetailScreen
+import androidx.navigation.compose.rememberNavController
+import com.lagunalabs.swapigraphql.ui.PeopleListScreen
 
 class MainActivity : ComponentActivity() {
     companion object {
@@ -30,9 +31,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             SWAPIGraphQLTheme {
-                // region This is an example of how to use `ApolloNetworking` - feel free to delete
                 val scope = rememberCoroutineScope()
-                var personName by remember { mutableStateOf("") }
+                val navController = rememberNavController()
+                var persons by remember { mutableStateOf(listOf<GetPeopleQuery.Person>()) }
 
                 LaunchedEffect(Unit) {
                     scope.launch {
@@ -45,17 +46,20 @@ class MainActivity : ComponentActivity() {
                         }
 
                         response.onSuccess {
-                            personName = it.allPeople?.people?.firstOrNull()?.name.toString()
+                            persons = it.allPeople?.people?.filterNotNull() ?: listOf()
                         }
                     }
                 }
-                // endregion
+                
+                NavHost(navController, startDestination = "personList") {
+                    composable("personList") {
+                        PeopleListScreen(persons, navController)
+                    }
 
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Text(personName)
+                    composable("peopleDetail/{index}") { backStackEntry ->
+                        val index = backStackEntry.arguments?.getString("index")?.toInt() ?: 0
+                        PeopleDetailScreen(persons.get(index), navController)
+                    }
                 }
             }
         }
