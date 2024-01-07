@@ -34,7 +34,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
-import com.lagunalabs.swapigraphql.ui.bottomsheet.CustomBottomSheetContainer
+import com.lagunalabs.swapigraphql.ui.bottomsheet.WebViewBottomSheetContainer
 import com.lagunalabs.swapigraphql.ui.theme.MidnightBlue
 import com.lagunalabs.`swapi-graphql`.GetPeopleQuery
 import com.lagunalabs.swapigraphql.R
@@ -105,7 +105,7 @@ private fun buttonSheet(showButtonSheet: MutableState<Boolean>) {
         ),
     ) {
         // seems network call is not return homepage data, so I just hardcode the url
-        CustomBottomSheetContainer("https://swapi.dev/api/planets/1/")
+        WebViewBottomSheetContainer("https://swapi.dev/api/planets/1/")
     }
 }
 

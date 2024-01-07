@@ -3,7 +3,6 @@ package com.lagunalabs.swapigraphql.ui.bottomsheet
 import android.graphics.Bitmap
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.compose.foundation.background
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.progressSemantics
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
@@ -25,7 +23,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.lagunalabs.swapigraphql.R
 
 @Composable
-fun CustomBottomSheetContainer(webUrl: String) {
+fun WebViewBottomSheetContainer(webUrl: String) {
     val scrollState = rememberScrollState()
     val isLoading = remember { mutableStateOf(true) }
 
