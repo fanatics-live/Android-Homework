@@ -23,10 +23,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.lagunalabs.`swapi-graphql`.GetPeopleQuery
 import com.lagunalabs.swapigraphql.R
+import com.lagunalabs.swapigraphql.ui.theme.Black
 import com.lagunalabs.swapigraphql.ui.theme.MidnightBlue
 
 @Composable
@@ -35,7 +37,7 @@ fun PeopleListScreen(
     navController: NavHostController
 ) {
     val gradient = Brush.verticalGradient(
-        colors = listOf(MidnightBlue, Color.Black)
+        colors = listOf(MidnightBlue, Black)
     )
     val paddingMedium = dimensionResource(id = R.dimen.padding_medium)
 
@@ -88,13 +90,25 @@ fun PersonList(persons: List<GetPeopleQuery.Person>, navController: NavControlle
                         }
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
-                        Text(text = "Name: ${person.name}", color = Color.White)
                         Text(
-                            text = "Height: ${person.height?.toString() ?: "Unknown"}",
+                            text = stringResource(
+                                id = R.string.name_label,
+                                formatArgs = arrayOf(person.name ?: "Unknown")
+                            ),
                             color = Color.White
                         )
                         Text(
-                            text = "Mass: ${person.mass?.toString() ?: "Unknown"}",
+                            text = stringResource(
+                                id = R.string.height_label,
+                                formatArgs = arrayOf(person.height?.toString() ?: "Unknown")
+                            ),
+                            color = Color.White
+                        )
+                        Text(
+                            text = stringResource(
+                                id = R.string.mass_label,
+                                formatArgs = arrayOf(person.mass?.toString() ?: "Unknown")
+                            ),
                             color = Color.White
                         )
                     }

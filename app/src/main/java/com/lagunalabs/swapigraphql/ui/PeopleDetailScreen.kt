@@ -38,12 +38,13 @@ import com.lagunalabs.swapigraphql.ui.bottomsheet.CustomBottomSheetContainer
 import com.lagunalabs.swapigraphql.ui.theme.MidnightBlue
 import com.lagunalabs.`swapi-graphql`.GetPeopleQuery
 import com.lagunalabs.swapigraphql.R
+import com.lagunalabs.swapigraphql.ui.theme.Black
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PeopleDetailScreen(person: GetPeopleQuery.Person, navController: NavController) {
     val gradient = Brush.verticalGradient(
-        colors = listOf(MidnightBlue, Color.Black)
+        colors = listOf(MidnightBlue, Black)
     )
     val paddingMedium = dimensionResource(id = R.dimen.padding_medium)
 
@@ -56,7 +57,7 @@ fun PeopleDetailScreen(person: GetPeopleQuery.Person, navController: NavControll
     ) {
         Column {
             TopAppBar(
-                title = { Text(text = "Person") },
+                title = { Text(text = "People") },
                 navigationIcon = {
                     IconButton(onClick = { navController.navigateUp() }) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = null)
@@ -90,6 +91,7 @@ private fun buttonSheet(showButtonSheet: MutableState<Boolean>) {
     val paddingMedium = dimensionResource(id = R.dimen.padding_medium)
     ModalBottomSheet(
         modifier = Modifier,
+        scrimColor = MidnightBlue.copy(alpha = 0.3f),
         sheetState = rememberModalBottomSheetState(
             skipPartiallyExpanded = false
         ),
